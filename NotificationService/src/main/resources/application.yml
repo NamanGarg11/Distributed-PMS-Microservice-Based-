@@ -1,0 +1,15 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: notification-service
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST}
+    port: ${SPRING_RABBITMQ_PORT}
+    username: guest  
+    password: guest
