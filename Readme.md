@@ -443,6 +443,12 @@ is available at the link below.
 - ❌ UserService failure & rollback
 - ❌ ProjectService failure & compensation
 
+### Testing Notes
+- Automated test coverage is limited; the focus of this task was on system design,
+  saga orchestration, and integration-level validation.
+- End-to-end workflows were manually tested and validated using Postman and service logs.
+
+
 ---
 
 
