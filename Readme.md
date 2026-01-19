@@ -1,10 +1,12 @@
 # Distributed Project Management System (Distributed PMS)
 
-A distributed microservices system built using Spring Boot, RabbitMQ, and PostgreSQL, implementing Saga-based asynchronous orchestration for managing cross-service workflows.
-The project demonstrates real-world backend architecture patterns, including database-per-service isolation, event-driven communication, and fault-tolerant transaction management using compensating actions.
+A distributed microservices system built using **Spring Boot**, **RabbitMQ**, and **PostgreSQL**, implementing **Saga-based asynchronous orchestration** for managing cross-service workflows.
 
-The system is fully containerized with Docker Compose, enabling reproducible local setups and service independence.
-It showcases loose coupling, eventual consistency, and resilience in a multi-service environment, along with clear separation of responsibilities across services.
+The project demonstrates real-world backend architecture patterns, including **database-per-service isolation**, **event-driven communication**, and **fault-tolerant transaction management** using compensating actions.
+
+The system is fully containerized with **Docker Compose**, enabling reproducible local setups and service independence.  
+It showcases **loose coupling**, **eventual consistency**, and **resilience** in a multi-service environment, along with clear separation of responsibilities across services.
+
 ---
 
 ## 📌 Table of Contents
