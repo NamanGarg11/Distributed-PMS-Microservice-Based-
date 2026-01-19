@@ -1,7 +1,10 @@
 # Distributed Project Management System (Distributed PMS)
 
-A **Spring Boot + RabbitMQ + PostgreSQL** based **distributed microservices system** implementing **Saga‑style asynchronous communication**. This project demonstrates real‑world microservice patterns including database‑per‑service, event‑driven messaging, containerization with Docker Compose, and service isolation.
+A distributed microservices system built using Spring Boot, RabbitMQ, and PostgreSQL, implementing Saga-based asynchronous orchestration for managing cross-service workflows.
+The project demonstrates real-world backend architecture patterns, including database-per-service isolation, event-driven communication, and fault-tolerant transaction management using compensating actions.
 
+The system is fully containerized with Docker Compose, enabling reproducible local setups and service independence.
+It showcases loose coupling, eventual consistency, and resilience in a multi-service environment, along with clear separation of responsibilities across services.
 ---
 
 ## 📌 Table of Contents
@@ -18,7 +21,7 @@ A **Spring Boot + RabbitMQ + PostgreSQL** based **distributed microservices syst
 10. Running the Application
 11. Service URLs & Ports
 12. Common Errors & Fixes
-13. Future Improvements
+13. TestCase Scenario (TestCase File)
 
 ---
 
@@ -202,8 +205,8 @@ Each service connects using **container name as hostname**.
 ### Clone Repository
 
 ```bash
-git clone <repo-url>
-cd Distributed-PMS
+git clone <https://github.com/NamanGarg11/Distributed-PMS-Microservice-Based->
+cd Distributed-PMS-Microservice-Based-
 ```
 
 ---
@@ -268,26 +271,123 @@ docker pull postgres:15
 **Cause:** Gradle dependency download
 **Fix:** Normal behavior — cache improves next builds
 
----
-
-## 1️⃣3️⃣ Future Improvements
-
-* API Gateway
-* Centralized Config Server
-* Distributed Tracing (Zipkin)
-* Authentication (JWT)
-* Kubernetes deployment
 
 ---
 
-## ✅ Conclusion
 
-This project demonstrates **real‑world distributed system principles** using industry‑standard tooling and clean architectural practices. It is suitable for:
 
-* Final year projects
-* Backend internships
-* System design interviews
+## 1️⃣3️⃣ TestCase Scenario
+
+
+
+## Test Case 1: Happy Path (Corrected with Notification)
+
+```
+Client
+  |
+  |  POST /tasks
+  v
+TaskService
+  |
+  |=> TASK_CREATED
+  v
+UserService
+  |
+  |=> USER_VALIDATED
+  v
+ProjectService
+  |
+  |=> PROJECT_VALIDATED
+  v
+NotificationService
+  |
+  |=> NOTIFICATION_SENT
+  v
+TaskService
+  |
+  |  Mark Task COMPLETED
+  v
+Database
+```
 
 ---
 
-✍️ You can freely edit this README to add screenshots, API examples, or diagrams.
+## Test Case 2: User Service Failure
+
+```
+Client
+  |
+  |  POST /tasks
+  v
+TaskService
+  |
+  |=> TASK_CREATED
+  v
+UserService
+  |
+  X  USER_NOT_FOUND
+  |
+  |=> USER_VALIDATION_FAILED
+  v
+TaskService
+  |
+  |⟲ TASK_COMPENSATION
+  |  Mark Task FAILED
+  v
+Database
+```
+
+---
+
+## Test Case 3: Project Service Failure
+
+```
+Client
+  |
+  |  POST /tasks
+  v
+TaskService
+  |
+  |=> TASK_CREATED
+  v
+UserService
+  |
+  |=> USER_VALIDATED
+  v
+ProjectService
+  |
+  X  PROJECT_INVALID
+  |
+  |=> PROJECT_VALIDATION_FAILED
+  v
+TaskService
+  |
+  |⟲ TASK_COMPENSATION
+  |  Mark Task FAILED
+  v
+Database
+```
+## Test Execution & Validation Evidence
+
+The Saga orchestration flow has been tested against all defined scenarios.
+A detailed test execution report including inputs, outputs, logs, and observations
+is available at the link below.
+
+📄 **Test Report:**  
+👉 [View Test Execution Report](https://docs.google.com/document/d/1xZRqWo5J1kJMokr5zM4ZL6GMYYYHqX-n/edit?usp=drive_link)
+
+### Covered Scenarios
+- ✅ Happy Path execution
+- ❌ UserService failure & rollback
+- ❌ ProjectService failure & compensation
+
+
+
+
+
+
+
+---
+
+
+
