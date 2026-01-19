@@ -178,7 +178,6 @@ POST : http://localhost:8081/tasks  (Task Service)
 }
 
 ```
-> All saga workflows must be triggered via the Task Service only.
 
 ---
 
