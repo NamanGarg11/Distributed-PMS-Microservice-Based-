@@ -160,7 +160,8 @@ Distributed-PMS/
 
 ---
 
-###  Postman Request Examples
+## 6️⃣.1 Postman Request Examples
+
 
 All saga workflows are triggered via the **Task Service**, which acts as the saga orchestrator.
 
@@ -177,7 +178,7 @@ POST : http://localhost:8081/tasks  (Task Service)
 }
 
 ```
-
+> All saga workflows must be triggered via the Task Service only.
 
 ---
 
@@ -248,17 +249,19 @@ databases to execute saga workflows correctly.
 #### User Service – `user_db`
 
 ```sql
-INSERT INTO Users (id, name, status)  // status is enum (ACTIVE) can be null also
+-- status is an enum (ACTIVE) and can be NULL
+INSERT INTO users (id, name, status)
 VALUES
-    ("u1", 'Alice Sharma',null ),
-    ("u2", 'Bob Verma',null );
+    ('u1', 'Alice Sharma', NULL),
+    ('u2', 'Bob Verma', NULL);
+
 ```
 #### Project Service – `project_db`
 ```sql
 INSERT INTO projects (id, name)
 VALUES
-("p1", 'Distributed PMS'),
-("p2", 'Internal Tooling');
+('p1', 'Distributed PMS'),
+('p2', 'Internal Tooling');
 ```
 
 
@@ -336,8 +339,8 @@ docker pull postgres:15
 
 
 
-## 1️⃣3️⃣ TestCase Scenario
-
+## 1️⃣3️⃣ Test Case Scenarios
+All test cases are triggered via the `POST /tasks` endpoint of the Task Service.
 
 
 ## Test Case 1: Happy Path (Corrected with Notification)
