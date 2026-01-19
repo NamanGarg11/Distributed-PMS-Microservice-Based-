@@ -42,9 +42,9 @@ This architecture avoids tight coupling and enables scalability, fault tolerance
 ## 2️⃣ Tech Stack
 
 | Layer            | Technology                  |
-| ---------------- | --------------------------- |
+| ---------------- |-----------------------------|
 | Language         | Java 17                     |
-| Framework        | Spring Boot 3.x             |
+| Framework        | Spring Boot 3.2.2           |
 | Messaging        | RabbitMQ                    |
 | Databases        | PostgreSQL (per service)    |
 | ORM              | Spring Data JPA / Hibernate |
@@ -160,6 +160,27 @@ Distributed-PMS/
 
 ---
 
+###  Postman Request Examples
+
+All saga workflows are triggered via the **Task Service**, which acts as the saga orchestrator.
+
+**Base URL**
+```
+POST : http://localhost:8081/tasks  (Task Service)
+```
+**Request Body**
+```json
+{
+  "title": "Build Authentication Module",
+  "userId": "u1",
+  "projectId": "p1"
+}
+
+```
+
+
+---
+
 ## 7️⃣ Configuration Strategy
 
 ### application.yml (All Services)
@@ -203,6 +224,43 @@ Each service connects using **container name as hostname**.
 * Docker >= 24.x
 * Docker Compose v2
 * Internet connection (for first build)
+
+### Data Prerequisites
+
+The **User Service** and **Project Service** databases must contain pre-inserted data
+for the saga workflows to execute successfully.
+
+- Valid `userId` values must already exist in the **user_db**
+- Valid `projectId` values must already exist in the **project_db**
+
+These records are required to:
+- Validate happy-path execution
+- Simulate failure scenarios using non-existent IDs
+
+> Note: Docker volumes preserve database state across restarts.
+If required, databases can be reset by removing volumes and restarting the services.
+
+
+
+The following sample records must exist in the **User Service** and **Project Service**
+databases to execute saga workflows correctly.
+
+#### User Service – `user_db`
+
+```sql
+INSERT INTO Users (id, name, status)  // status is enum (ACTIVE) can be null also
+VALUES
+    ("u1", 'Alice Sharma',null ),
+    ("u2", 'Bob Verma',null );
+```
+#### Project Service – `project_db`
+```sql
+INSERT INTO projects (id, name)
+VALUES
+("p1", 'Distributed PMS'),
+("p2", 'Internal Tooling');
+```
+
 
 ### Clone Repository
 
@@ -382,12 +440,6 @@ is available at the link below.
 - ✅ Happy Path execution
 - ❌ UserService failure & rollback
 - ❌ ProjectService failure & compensation
-
-
-
-
-
-
 
 ---
 
